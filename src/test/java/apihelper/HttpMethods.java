@@ -10,6 +10,7 @@ public class HttpMethods
 {
     public HttpMethods(String uri)
     {
+        this.uri=uri;
         RestAssured.baseURI=uri;
     }
 
@@ -18,7 +19,7 @@ public class HttpMethods
         RestAssured.baseURI=uri;
     }
 
-    private String url="";
+    private String url="",uri;
     public HttpMethods setEndPoint(String endPointName)
     {
         url="/"+endPointName+"?";
@@ -47,15 +48,17 @@ public class HttpMethods
         return this;
     }
 
-    public void cleanObject()
+    public HttpMethods cleanObject()
     {
         parameterCount=0;
         url="";
+        return this;
     }
 
     public String get200()
     {
-        RequestSpecification request=RestAssured.given();
+        RequestSpecification request=RestAssured.given().contentType(ContentType.JSON);
+        System.out.println(uri+url);
         Response rs=request.when().get(url);
         Assert.assertEquals(200,rs.statusCode());
 
@@ -65,6 +68,7 @@ public class HttpMethods
     
     public String postWithBody(String postBody)
     {
+        System.out.println(uri+url);
         RequestSpecification request=RestAssured.given().contentType(ContentType.JSON).body(postBody);
         Response rs=request.post(url);
         if (rs.statusCode()==200)
