@@ -55,22 +55,32 @@ public class HttpMethods
         return this;
     }
 
-    public String get200()
+    public Response get200()
     {
         RequestSpecification request=RestAssured.given().contentType(ContentType.JSON);
         System.out.println(uri+url);
         Response rs=request.when().get(url);
-        Assert.assertEquals(200,rs.statusCode());
+        
 
-        return rs.getBody().asString();
+        return rs;
 
     }
     
-    public String postWithBody(String postBody)
+    public Response postWithBody(String postBody)
     {
         System.out.println(uri+url);
         RequestSpecification request=RestAssured.given().contentType(ContentType.JSON).body(postBody);
         Response rs=request.post(url);
+        
+        return rs;
+        
+    }
+    
+    public String putWithBody(String postBody)
+    {
+        System.out.println(uri+url);
+        RequestSpecification request=RestAssured.given().contentType(ContentType.JSON).body(postBody);
+        Response rs=request.put(url);
         if (rs.statusCode()==200)
         {
             Assert.assertEquals(200,rs.statusCode());
